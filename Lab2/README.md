@@ -17,6 +17,7 @@ feature ospf
 interface Ethernet1/1
   description to leaf-1
   no switchport
+  mtu 9216
   no ip redirects
   ip address 10.2.1.0/31
   ip router ospf UNDELAY area 0.0.0.0
@@ -25,6 +26,7 @@ interface Ethernet1/1
 interface Ethernet1/2
   description to leaf-2
   no switchport
+  mtu 9216
   no ip redirects
   ip address 10.2.1.2/31
   ip router ospf UNDELAY area 0.0.0.0
@@ -32,6 +34,7 @@ interface Ethernet1/2
 
 interface Ethernet1/3
   no switchport
+  mtu 9216
   no ip redirects
   ip address 10.2.1.4/31
   ip router ospf UNDELAY area 0.0.0.0
@@ -98,6 +101,7 @@ feature ospf
 interface Ethernet1/1
   description to leaf-1
   no switchport
+  mtu 9216
   no ip redirects
   ip address 10.2.2.0/31
   ip router ospf UNDELAY area 0.0.0.0
@@ -106,6 +110,7 @@ interface Ethernet1/1
 interface Ethernet1/2
   description to leaf-2
   no switchport
+  mtu 9216
   no ip redirects
   ip address 10.2.2.2/31
   ip router ospf UNDELAY area 0.0.0.0
@@ -113,6 +118,7 @@ interface Ethernet1/2
 
 interface Ethernet1/3
   no switchport
+  mtu 9216
   no ip redirects
   ip address 10.2.2.4/31
   ip router ospf UNDELAY area 0.0.0.0
@@ -179,6 +185,7 @@ feature ospf
 interface Ethernet1/1
   description to Spine-1
   no switchport
+  mtu 9216
   no ip redirects
   ip address 10.2.1.1/31
   ip router ospf UNDELAY area 0.0.0.0
@@ -187,6 +194,7 @@ interface Ethernet1/1
 interface Ethernet1/2
   description to Spine-2
   no switchport
+  mtu 9216
   no ip redirects
   ip address 10.2.2.1/31
   ip router ospf UNDELAY area 0.0.0.0
@@ -251,6 +259,7 @@ feature ospf
 interface Ethernet1/1
   description to Spine-1
   no switchport
+  mtu 9216
   no ip redirects
   ip address 10.2.1.3/31
   ip router ospf UNDELAY area 0.0.0.0
@@ -259,6 +268,7 @@ interface Ethernet1/1
 interface Ethernet1/2
   description to Spine-2
   no switchport
+  mtu 9216
   no ip redirects
   ip address 10.2.2.3/31
   ip router ospf UNDELAY area 0.0.0.0
@@ -323,6 +333,7 @@ feature ospf
 interface Ethernet1/1
   description to Spine-1
   no switchport
+  mtu 9216
   no ip redirects
   ip address 10.2.1.5/31
   ip router ospf UNDELAY area 0.0.0.0
@@ -331,6 +342,7 @@ interface Ethernet1/1
 interface Ethernet1/2
   description to Spine-2
   no switchport
+  mtu 9216
   no ip redirects
   ip address 10.2.2.5/31
   ip router ospf UNDELAY area 0.0.0.0
