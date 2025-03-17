@@ -20,6 +20,7 @@ interface Ethernet1/1
   mtu 9216
   no ip redirects
   ip address 10.2.1.0/31
+  ip ospf network point-to-point
   ip router ospf UNDELAY area 0.0.0.0
   no shutdown
 
@@ -29,6 +30,7 @@ interface Ethernet1/2
   mtu 9216
   no ip redirects
   ip address 10.2.1.2/31
+  ip ospf network point-to-point
   ip router ospf UNDELAY area 0.0.0.0
   no shutdown
 
@@ -37,6 +39,7 @@ interface Ethernet1/3
   mtu 9216
   no ip redirects
   ip address 10.2.1.4/31
+  ip ospf network point-to-point
   ip router ospf UNDELAY area 0.0.0.0
   no shutdown
 
@@ -49,6 +52,7 @@ interface loopback2
 
 router ospf UNDELAY
   router-id 10.0.1.0
+  passive-interface default
 ```
 ### Вывод маршрутной информации
 ```
@@ -104,6 +108,7 @@ interface Ethernet1/1
   mtu 9216
   no ip redirects
   ip address 10.2.2.0/31
+  ip ospf network point-to-point
   ip router ospf UNDELAY area 0.0.0.0
   no shutdown
 
@@ -113,6 +118,7 @@ interface Ethernet1/2
   mtu 9216
   no ip redirects
   ip address 10.2.2.2/31
+  ip ospf network point-to-point
   ip router ospf UNDELAY area 0.0.0.0
   no shutdown
 
@@ -121,6 +127,7 @@ interface Ethernet1/3
   mtu 9216
   no ip redirects
   ip address 10.2.2.4/31
+  ip ospf network point-to-point
   ip router ospf UNDELAY area 0.0.0.0
   no shutdown
 
@@ -133,6 +140,7 @@ interface loopback2
 
 router ospf UNDELAY
   router-id 10.0.2.0
+  passive-interface default
 ```
 ### Вывод маршрутной информации
 ```
@@ -188,6 +196,7 @@ interface Ethernet1/1
   mtu 9216
   no ip redirects
   ip address 10.2.1.1/31
+  ip ospf network point-to-point
   ip router ospf UNDELAY area 0.0.0.0
   no shutdown
 
@@ -197,6 +206,7 @@ interface Ethernet1/2
   mtu 9216
   no ip redirects
   ip address 10.2.2.1/31
+  ip ospf network point-to-point
   ip router ospf UNDELAY area 0.0.0.0
   no shutdown
 
@@ -209,6 +219,7 @@ interface loopback2
 
 router ospf UNDELAY
   router-id 10.0.0.1
+  passive-interface default
 ```
 ### Вывод маршрутной информации
 ```
@@ -262,6 +273,7 @@ interface Ethernet1/1
   mtu 9216
   no ip redirects
   ip address 10.2.1.3/31
+  ip ospf network point-to-point
   ip router ospf UNDELAY area 0.0.0.0
   no shutdown
 
@@ -271,6 +283,7 @@ interface Ethernet1/2
   mtu 9216
   no ip redirects
   ip address 10.2.2.3/31
+  ip ospf network point-to-point
   ip router ospf UNDELAY area 0.0.0.0
   no shutdown
 
@@ -283,6 +296,7 @@ interface loopback2
 
 router ospf UNDELAY
   router-id 10.0.0.2
+  passive-interface default
 ```
 ### Вывод маршрутной информации
 ```
@@ -336,6 +350,7 @@ interface Ethernet1/1
   mtu 9216
   no ip redirects
   ip address 10.2.1.5/31
+  ip ospf network point-to-point
   ip router ospf UNDELAY area 0.0.0.0
   no shutdown
 
@@ -345,6 +360,7 @@ interface Ethernet1/2
   mtu 9216
   no ip redirects
   ip address 10.2.2.5/31
+  ip ospf network point-to-point
   ip router ospf UNDELAY area 0.0.0.0
   no shutdown
 
@@ -357,6 +373,7 @@ interface loopback2
 
 router ospf UNDELAY
   router-id 10.0.0.3
+  passive-interface default
 ```
 ### Вывод маршрутной информации
 ```
