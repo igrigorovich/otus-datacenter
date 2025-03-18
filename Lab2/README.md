@@ -21,6 +21,7 @@ interface Ethernet1/1
   no ip redirects
   ip address 10.2.1.0/31
   ip ospf network point-to-point
+  no ip ospf passive-interface
   ip router ospf UNDERLAY area 0.0.0.0
   no shutdown
 
@@ -31,6 +32,7 @@ interface Ethernet1/2
   no ip redirects
   ip address 10.2.1.2/31
   ip ospf network point-to-point
+  no ip ospf passive-interface
   ip router ospf UNDERLAY area 0.0.0.0
   no shutdown
 
@@ -40,6 +42,7 @@ interface Ethernet1/3
   no ip redirects
   ip address 10.2.1.4/31
   ip ospf network point-to-point
+  no ip ospf passive-interface
   ip router ospf UNDERLAY area 0.0.0.0
   no shutdown
 
@@ -109,6 +112,7 @@ interface Ethernet1/1
   no ip redirects
   ip address 10.2.2.0/31
   ip ospf network point-to-point
+  no ip ospf passive-interface
   ip router ospf UNDERLAY area 0.0.0.0
   no shutdown
 
@@ -119,6 +123,7 @@ interface Ethernet1/2
   no ip redirects
   ip address 10.2.2.2/31
   ip ospf network point-to-point
+  no ip ospf passive-interface
   ip router ospf UNDERLAY area 0.0.0.0
   no shutdown
 
@@ -128,6 +133,7 @@ interface Ethernet1/3
   no ip redirects
   ip address 10.2.2.4/31
   ip ospf network point-to-point
+  no ip ospf passive-interface
   ip router ospf UNDERLAY area 0.0.0.0
   no shutdown
 
@@ -197,6 +203,7 @@ interface Ethernet1/1
   no ip redirects
   ip address 10.2.1.1/31
   ip ospf network point-to-point
+  no ip ospf passive-interface
   ip router ospf UNDERLAY area 0.0.0.0
   no shutdown
 
@@ -207,6 +214,7 @@ interface Ethernet1/2
   no ip redirects
   ip address 10.2.2.1/31
   ip ospf network point-to-point
+  no ip ospf passive-interface
   ip router ospf UNDERLAY area 0.0.0.0
   no shutdown
 
@@ -274,6 +282,7 @@ interface Ethernet1/1
   no ip redirects
   ip address 10.2.1.3/31
   ip ospf network point-to-point
+  no ip ospf passive-interface
   ip router ospf UNDERLAY area 0.0.0.0
   no shutdown
 
@@ -284,6 +293,7 @@ interface Ethernet1/2
   no ip redirects
   ip address 10.2.2.3/31
   ip ospf network point-to-point
+  no ip ospf passive-interface
   ip router ospf UNDERLAY area 0.0.0.0
   no shutdown
 
@@ -351,6 +361,7 @@ interface Ethernet1/1
   no ip redirects
   ip address 10.2.1.5/31
   ip ospf network point-to-point
+  no ip ospf passive-interface
   ip router ospf UNDERLAY area 0.0.0.0
   no shutdown
 
@@ -361,6 +372,7 @@ interface Ethernet1/2
   no ip redirects
   ip address 10.2.2.5/31
   ip ospf network point-to-point
+  no ip ospf passive-interface
   ip router ospf UNDERLAY area 0.0.0.0
   no shutdown
 
