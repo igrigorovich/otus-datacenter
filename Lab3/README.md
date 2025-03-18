@@ -46,7 +46,6 @@ interface loopback1
 
 interface loopback2
   ip address 10.1.1.0/32
-icam monitor scale
 
 router isis UNDERLAY
   net 49.0001.0000.0001.0001.00
