@@ -18,6 +18,9 @@
 ```
 feature bgp
 
+route-map RM_Leaves_BGP permit 10
+  match as-number 65501-65599 
+
 interface Ethernet1/1
   description to leaf-1
   no switchport
@@ -47,6 +50,14 @@ interface loopback1
 interface loopback2
   ip address 10.1.1.0/32
 
+router bgp 65000
+  router-id 10.0.1.0
+  reconnect-interval 12
+  log-neighbor-changes
+  address-family ipv4 unicast
+    maximum-paths 10
+  neighbor 10.2.1.0/24 remote-as route-map RM_Leaves_BGP
+    address-family ipv4 unicast
 ```
 ### Вывод маршрутной информации
 ```
@@ -99,6 +110,9 @@ IP Route Table for VRF "default"
 ```
 feature bgp
 
+route-map RM_Leaves_BGP permit 10
+  match as-number 65501-65599
+
 interface Ethernet1/1
   description to leaf-1
   no switchport
@@ -129,6 +143,14 @@ interface loopback1
 interface loopback2
   ip address 10.1.2.0/32
 
+router bgp 65000
+  router-id 10.0.2.0
+  reconnect-interval 12
+  log-neighbor-changes
+  address-family ipv4 unicast
+    maximum-paths 10
+  neighbor 10.2.2.0/24 remote-as route-map RM_Leaves_BGP
+    address-family ipv4 unicast
 ```
 ### Вывод маршрутной информации
 ```
@@ -181,6 +203,8 @@ IP Route Table for VRF "default"
 ```
 feature bgp
 
+route-map REDISTRIBUTE_CONNECTED permit 10
+  match interface loopback1 loopback2
 
 interface Ethernet1/1
   description to Spine-1
@@ -198,13 +222,27 @@ interface Ethernet1/2
   ip address 10.2.2.1/31
   no shutdown
 
-
 interface loopback1
   ip address 10.0.0.1/32
 
 interface loopback2
   ip address 10.1.0.1/32
 
+router bgp 65501
+  router-id 10.0.0.1
+  reconnect-interval 12
+  log-neighbor-changes
+  address-family ipv4 unicast
+    redistribute direct route-map REDISTRIBUTE_CONNECTED
+    maximum-paths 10
+  template peer SPINES
+    remote-as 65000
+    timers 3 9
+    address-family ipv4 unicast
+  neighbor 10.2.1.0
+    inherit peer SPINES
+  neighbor 10.2.2.0
+    inherit peer SPINES
 ```
 ### Вывод маршрутной информации
 ```
@@ -253,6 +291,9 @@ IP Route Table for VRF "default"
 ```
 feature bgp
 
+route-map REDISTRIBUTE_CONNECTED permit 10
+  match interface loopback1 loopback2
+
 interface Ethernet1/1
   description to Spine-1
   no switchport
@@ -275,6 +316,21 @@ interface loopback1
 interface loopback2
   ip address 10.1.0.2/32
 
+router bgp 65502
+  router-id 10.0.0.2
+  reconnect-interval 12
+  log-neighbor-changes
+  address-family ipv4 unicast
+    redistribute direct route-map REDISTRIBUTE_CONNECTED
+    maximum-paths 10
+  template peer SPINES
+    remote-as 65000
+    timers 3 9
+    address-family ipv4 unicast
+  neighbor 10.2.1.2
+    inherit peer SPINES
+  neighbor 10.2.2.2
+    inherit peer SPINES
 ```
 ### Вывод маршрутной информации
 ```
@@ -322,6 +378,9 @@ IP Route Table for VRF "default"
 ```
 feature bgp
 
+route-map REDISTRIBUTE_CONNECTED permit 10
+  match interface loopback1 loopback2
+
 interface Ethernet1/1
   description to Spine-1
   no switchport
@@ -344,6 +403,21 @@ interface loopback1
 interface loopback2
   ip address 10.1.0.3/32
 
+router bgp 65503
+  router-id 10.0.0.3
+  reconnect-interval 12
+  log-neighbor-changes
+  address-family ipv4 unicast
+    redistribute direct route-map REDISTRIBUTE_CONNECTED
+    maximum-paths 10
+  template peer SPINES
+    remote-as 65000
+    timers 3 9
+    address-family ipv4 unicast
+  neighbor 10.2.1.4
+    inherit peer SPINES
+  neighbor 10.2.2.4
+    inherit peer SPINES
 ```
 ### Вывод маршрутной информации
 ```
