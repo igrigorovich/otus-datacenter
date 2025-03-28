@@ -100,6 +100,7 @@ IP Route Table for VRF "default"
     *via 10.2.1.4, Eth1/3, [0/0], 00:32:50, local
 ```
 
+
 </p>
 </details>
 
@@ -280,7 +281,43 @@ IP Route Table for VRF "default"
 10.2.2.1/32, ubest/mbest: 1/0, attached
     *via 10.2.2.1, Eth1/2, [0/0], 00:32:54, local
 
-```  
+```
+### Ping
+```
+Leaf-1# ping 10.0.0.1 source-interface loopback1
+PING 10.0.0.1 (10.0.0.1): 56 data bytes
+64 bytes from 10.0.0.1: icmp_seq=0 ttl=255 time=1.176 ms
+64 bytes from 10.0.0.1: icmp_seq=1 ttl=255 time=0.07 ms
+64 bytes from 10.0.0.1: icmp_seq=2 ttl=255 time=0.048 ms
+64 bytes from 10.0.0.1: icmp_seq=3 ttl=255 time=0.086 ms
+64 bytes from 10.0.0.1: icmp_seq=4 ttl=255 time=0.047 ms
+
+--- 10.0.0.1 ping statistics ---
+5 packets transmitted, 5 packets received, 0.00% packet loss
+round-trip min/avg/max = 0.047/0.285/1.176 ms
+Leaf-1# ping 10.0.0.2 source-interface loopback1
+PING 10.0.0.2 (10.0.0.2): 56 data bytes
+64 bytes from 10.0.0.2: icmp_seq=0 ttl=253 time=9.106 ms
+64 bytes from 10.0.0.2: icmp_seq=1 ttl=253 time=7.668 ms
+64 bytes from 10.0.0.2: icmp_seq=2 ttl=253 time=4.626 ms
+64 bytes from 10.0.0.2: icmp_seq=3 ttl=253 time=3.783 ms
+64 bytes from 10.0.0.2: icmp_seq=4 ttl=253 time=2.48 ms
+
+--- 10.0.0.2 ping statistics ---
+5 packets transmitted, 5 packets received, 0.00% packet loss
+round-trip min/avg/max = 2.48/5.532/9.106 ms
+Leaf-1# ping 10.0.0.3 source-interface loopback1
+PING 10.0.0.3 (10.0.0.3): 56 data bytes
+64 bytes from 10.0.0.3: icmp_seq=0 ttl=253 time=4.403 ms
+64 bytes from 10.0.0.3: icmp_seq=1 ttl=253 time=7.93 ms
+64 bytes from 10.0.0.3: icmp_seq=2 ttl=253 time=4.84 ms
+64 bytes from 10.0.0.3: icmp_seq=3 ttl=253 time=5.432 ms
+64 bytes from 10.0.0.3: icmp_seq=4 ttl=253 time=3.702 ms
+
+--- 10.0.0.3 ping statistics ---
+5 packets transmitted, 5 packets received, 0.00% packet loss
+round-trip min/avg/max = 3.702/5.261/7.93 ms
+```
   </p>
 </details>
 
@@ -367,7 +404,43 @@ IP Route Table for VRF "default"
     *via 10.2.2.3, Eth1/2, [0/0], 00:32:59, direct
 10.2.2.3/32, ubest/mbest: 1/0, attached
     *via 10.2.2.3, Eth1/2, [0/0], 00:32:59, local
-```  
+```
+### Ping
+```
+Leaf-2# ping 10.0.0.1 source-interface loopback1
+PING 10.0.0.1 (10.0.0.1): 56 data bytes
+64 bytes from 10.0.0.1: icmp_seq=0 ttl=253 time=7.303 ms
+64 bytes from 10.0.0.1: icmp_seq=1 ttl=253 time=8.946 ms
+64 bytes from 10.0.0.1: icmp_seq=2 ttl=253 time=6.068 ms
+64 bytes from 10.0.0.1: icmp_seq=3 ttl=253 time=3.835 ms
+64 bytes from 10.0.0.1: icmp_seq=4 ttl=253 time=3.318 ms
+
+--- 10.0.0.1 ping statistics ---
+5 packets transmitted, 5 packets received, 0.00% packet loss
+round-trip min/avg/max = 3.318/5.894/8.946 ms
+Leaf-2# ping 10.0.0.2 source-interface loopback1
+PING 10.0.0.2 (10.0.0.2): 56 data bytes
+64 bytes from 10.0.0.2: icmp_seq=0 ttl=255 time=1.017 ms
+64 bytes from 10.0.0.2: icmp_seq=1 ttl=255 time=1.112 ms
+64 bytes from 10.0.0.2: icmp_seq=2 ttl=255 time=1.069 ms
+64 bytes from 10.0.0.2: icmp_seq=3 ttl=255 time=1.233 ms
+64 bytes from 10.0.0.2: icmp_seq=4 ttl=255 time=0.151 ms
+
+--- 10.0.0.2 ping statistics ---
+5 packets transmitted, 5 packets received, 0.00% packet loss
+round-trip min/avg/max = 0.151/0.916/1.233 ms
+Leaf-2# ping 10.0.0.3 source-interface loopback1
+PING 10.0.0.3 (10.0.0.3): 56 data bytes
+64 bytes from 10.0.0.3: icmp_seq=0 ttl=253 time=8.513 ms
+64 bytes from 10.0.0.3: icmp_seq=1 ttl=253 time=6.757 ms
+64 bytes from 10.0.0.3: icmp_seq=2 ttl=253 time=5.304 ms
+64 bytes from 10.0.0.3: icmp_seq=3 ttl=253 time=3.947 ms
+64 bytes from 10.0.0.3: icmp_seq=4 ttl=253 time=3.481 ms
+
+--- 10.0.0.3 ping statistics ---
+5 packets transmitted, 5 packets received, 0.00% packet loss
+round-trip min/avg/max = 3.481/5.6/8.513 ms
+```
   </p>
 </details>
 
@@ -454,7 +527,42 @@ IP Route Table for VRF "default"
     *via 10.2.2.5, Eth1/2, [0/0], 00:32:58, direct
 10.2.2.5/32, ubest/mbest: 1/0, attached
     *via 10.2.2.5, Eth1/2, [0/0], 00:32:58, local
-```  
+```
+### Ping
+```
+Leaf-3# ping 10.0.0.1 source-interface loopback1
+PING 10.0.0.1 (10.0.0.1): 56 data bytes
+64 bytes from 10.0.0.1: icmp_seq=0 ttl=253 time=5.874 ms
+64 bytes from 10.0.0.1: icmp_seq=1 ttl=253 time=3.76 ms
+64 bytes from 10.0.0.1: icmp_seq=2 ttl=253 time=2.77 ms
+64 bytes from 10.0.0.1: icmp_seq=3 ttl=253 time=2.86 ms
+64 bytes from 10.0.0.1: icmp_seq=4 ttl=253 time=2.479 ms
+
+--- 10.0.0.1 ping statistics ---
+5 packets transmitted, 5 packets received, 0.00% packet loss
+round-trip min/avg/max = 2.479/3.548/5.874 ms
+Leaf-3# ping 10.0.0.2 source-interface loopback1
+PING 10.0.0.2 (10.0.0.2): 56 data bytes
+64 bytes from 10.0.0.2: icmp_seq=0 ttl=253 time=4.861 ms
+64 bytes from 10.0.0.2: icmp_seq=1 ttl=253 time=6.347 ms
+64 bytes from 10.0.0.2: icmp_seq=2 ttl=253 time=6.112 ms
+64 bytes from 10.0.0.2: icmp_seq=3 ttl=253 time=2.705 ms
+64 bytes from 10.0.0.2: icmp_seq=4 ttl=253 time=4.089 ms
+
+--- 10.0.0.2 ping statistics ---
+5 packets transmitted, 5 packets received, 0.00% packet loss
+round-trip min/avg/max = 2.705/4.822/6.347 ms
+Leaf-3# ping 10.0.0.3 source-interface loopback1
+PING 10.0.0.3 (10.0.0.3): 56 data bytes
+64 bytes from 10.0.0.3: icmp_seq=0 ttl=255 time=0.136 ms
+64 bytes from 10.0.0.3: icmp_seq=1 ttl=255 time=0.097 ms
+64 bytes from 10.0.0.3: icmp_seq=2 ttl=255 time=0.077 ms
+64 bytes from 10.0.0.3: icmp_seq=3 ttl=255 time=0.074 ms
+
+--- 10.0.0.3 ping statistics ---
+5 packets transmitted, 4 packets received, 20.00% packet loss
+round-trip min/avg/max = 0.074/0.096/0.136 ms
+```
   </p>
 </details>
 
