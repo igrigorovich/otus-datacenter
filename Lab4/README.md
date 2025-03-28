@@ -1,4 +1,4 @@
-# Домашние задание 3
+# Домашние задание 4
 ## Построение Underlay сети(BGP)
 
 ### Схема сети
@@ -16,7 +16,7 @@
   <p> 
 
 ```
-feature isis
+feature bgp
 
 interface Ethernet1/1
   description to leaf-1
@@ -24,7 +24,6 @@ interface Ethernet1/1
   mtu 9000
   no ip redirects
   ip address 10.2.1.0/31
-  ip router isis UNDERLAY
   no shutdown
 
 interface Ethernet1/2
@@ -33,7 +32,6 @@ interface Ethernet1/2
   mtu 9000
   no ip redirects
   ip address 10.2.1.2/31
-  ip router isis UNDERLAY
   no shutdown
 
 interface Ethernet1/3
@@ -41,20 +39,14 @@ interface Ethernet1/3
   mtu 9000
   no ip redirects
   ip address 10.2.1.4/31
-  ip router isis UNDERLAY
   no shutdown
 
 interface loopback1
   ip address 10.0.1.0/32
-  ip router isis UNDERLAY
 
 interface loopback2
   ip address 10.1.1.0/32
 
-router isis UNDERLAY
-  net 49.0001.0000.0001.0001.00
-  is-type level-1
-  set-overload-bit on-startup 60
 ```
 ### Вывод маршрутной информации
 ```
@@ -105,7 +97,7 @@ IP Route Table for VRF "default"
   <p> 
 
 ```
-feature isis
+feature bgp
 
 interface Ethernet1/1
   description to leaf-1
@@ -113,7 +105,6 @@ interface Ethernet1/1
   mtu 9000
   no ip redirects
   ip address 10.2.2.0/31
-  ip router isis UNDERLAY
   no shutdown
 
 interface Ethernet1/2
@@ -122,7 +113,6 @@ interface Ethernet1/2
   mtu 9000
   no ip redirects
   ip address 10.2.2.2/31
-  ip router isis UNDERLAY
   no shutdown
 
 interface Ethernet1/3
@@ -130,20 +120,15 @@ interface Ethernet1/3
   mtu 9000
   no ip redirects
   ip address 10.2.2.4/31
-  ip router isis UNDERLAY
   no shutdown
 
 interface loopback1
   ip address 10.0.2.0/32
-  ip router isis UNDERLAY
+
 
 interface loopback2
   ip address 10.1.2.0/32
 
-router isis UNDERLAY
-  net 49.0001.0000.0001.0002.00
-  is-type level-1
-  set-overload-bit on-startup 60
 ```
 ### Вывод маршрутной информации
 ```
@@ -194,7 +179,7 @@ IP Route Table for VRF "default"
   <p>
  
 ```
-feature isis
+feature bgp
 
 
 interface Ethernet1/1
@@ -203,7 +188,6 @@ interface Ethernet1/1
   mtu 9000
   no ip redirects
   ip address 10.2.1.1/31
-  ip router isis UNDERLAY
   no shutdown
 
 interface Ethernet1/2
@@ -212,21 +196,15 @@ interface Ethernet1/2
   mtu 9000
   no ip redirects
   ip address 10.2.2.1/31
-  ip router isis UNDERLAY
   no shutdown
 
 
 interface loopback1
   ip address 10.0.0.1/32
-  ip router isis UNDERLAY
 
 interface loopback2
   ip address 10.1.0.1/32
 
-router isis UNDERLAY
-  net 49.0001.0000.0000.1001.00
-  is-type level-1
-  set-overload-bit on-startup 60
 ```
 ### Вывод маршрутной информации
 ```
@@ -273,7 +251,7 @@ IP Route Table for VRF "default"
   <p>
  
 ```
-feature isis
+feature bgp
 
 interface Ethernet1/1
   description to Spine-1
@@ -281,7 +259,6 @@ interface Ethernet1/1
   mtu 9000
   no ip redirects
   ip address 10.2.1.3/31
-  ip router isis UNDERLAY
   no shutdown
 
 interface Ethernet1/2
@@ -290,20 +267,13 @@ interface Ethernet1/2
   mtu 9000
   no ip redirects
   ip address 10.2.2.3/31
-  ip router isis UNDERLAY
   no shutdown
 
 interface loopback1
   ip address 10.0.0.2/32
-  ip router isis UNDERLAY
 
 interface loopback2
   ip address 10.1.0.2/32
-
-router isis UNDERLAY
-  net 49.0001.0000.0000.1002.00
-  is-type level-1
-  set-overload-bit on-startup 60
 
 ```
 ### Вывод маршрутной информации
@@ -350,7 +320,7 @@ IP Route Table for VRF "default"
   <p>
  
 ```
-feature isis
+feature bgp
 
 interface Ethernet1/1
   description to Spine-1
@@ -358,7 +328,6 @@ interface Ethernet1/1
   mtu 9000
   no ip redirects
   ip address 10.2.1.5/31
-  ip router isis UNDERLAY
   no shutdown
 
 interface Ethernet1/2
@@ -367,20 +336,14 @@ interface Ethernet1/2
   mtu 9000
   no ip redirects
   ip address 10.2.2.5/31
-  ip router isis UNDERLAY
   no shutdown
 
 interface loopback1
   ip address 10.0.0.3/32
-  ip router isis UNDERLAY
 
 interface loopback2
   ip address 10.1.0.3/32
 
-router isis UNDERLAY
-  net 49.0001.0000.0000.1003.00
-  is-type level-1
-  set-overload-bit on-startup 60
 ```
 ### Вывод маршрутной информации
 ```
