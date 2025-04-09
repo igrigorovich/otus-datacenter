@@ -16,10 +16,16 @@
   <p> 
 
 ```
+nv overlay evpn
 feature bgp
 
+route-map NH_UNCHANGED permit 10
+  set ip next-hop unchanged
+route-map REDISTRIBUTE_CONNECTED permit 10
+  match interface loopback1 loopback2 
 route-map RM_Leaves_BGP permit 10
-  match as-number 65501-65599 
+  match as-number 65501-65599
+
 
 interface Ethernet1/1
   description to leaf-1
@@ -52,16 +58,30 @@ interface loopback2
 
 router bgp 65000
   router-id 10.0.1.0
+  timers bgp 3 9
   reconnect-interval 12
   log-neighbor-changes
   address-family ipv4 unicast
+    redistribute direct route-map REDISTRIBUTE_CONNECTED
     maximum-paths 10
+  address-family l2vpn evpn
+    maximum-paths 10
+    retain route-target all
+  neighbor 10.0.0.0/24 remote-as route-map RM_Leaves_BGP
+    remote-as external
+    update-source loopback1
+    ebgp-multihop 5
+    address-family l2vpn evpn
+      send-community
+      send-community extended
+      route-map NH_UNCHANGED out
+      rewrite-evpn-rt-asn
   neighbor 10.2.1.0/24 remote-as route-map RM_Leaves_BGP
     address-family ipv4 unicast
 ```
 ### Вывод маршрутной информации
 ```
-Spine-1# sh ip route
+Spine-1# sh ip ro
 IP Route Table for VRF "default"
 '*' denotes best ucast next-hop
 '**' denotes best mcast next-hop
@@ -69,37 +89,73 @@ IP Route Table for VRF "default"
 '%<string>' in via output denotes VRF <string>
 
 10.0.0.1/32, ubest/mbest: 1/0
-    *via 10.2.1.1, [20/0], 00:11:13, bgp-65000, external, tag 65501
+    *via 10.2.1.1, [20/0], 00:27:33, bgp-65000, external, tag 65501
 10.0.0.2/32, ubest/mbest: 1/0
-    *via 10.2.1.3, [20/0], 00:08:56, bgp-65000, external, tag 65502
+    *via 10.2.1.3, [20/0], 00:27:33, bgp-65000, external, tag 65502
 10.0.0.3/32, ubest/mbest: 1/0
-    *via 10.2.1.5, [20/0], 00:08:28, bgp-65000, external, tag 65503
+    *via 10.2.1.5, [20/0], 00:27:34, bgp-65000, external, tag 65503
 10.0.1.0/32, ubest/mbest: 2/0, attached
-    *via 10.0.1.0, Lo1, [0/0], 00:32:49, local
-    *via 10.0.1.0, Lo1, [0/0], 00:32:49, direct
+    *via 10.0.1.0, Lo1, [0/0], 00:29:04, local
+    *via 10.0.1.0, Lo1, [0/0], 00:29:04, direct
 10.1.0.1/32, ubest/mbest: 1/0
-    *via 10.2.1.1, [20/0], 00:03:23, bgp-65000, external, tag 65501
+    *via 10.2.1.1, [20/0], 00:27:33, bgp-65000, external, tag 65501
 10.1.0.2/32, ubest/mbest: 1/0
-    *via 10.2.1.3, [20/0], 00:01:49, bgp-65000, external, tag 65502
+    *via 10.2.1.3, [20/0], 00:27:33, bgp-65000, external, tag 65502
 10.1.0.3/32, ubest/mbest: 1/0
-    *via 10.2.1.5, [20/0], 00:01:37, bgp-65000, external, tag 65503
+    *via 10.2.1.5, [20/0], 00:27:34, bgp-65000, external, tag 65503
 10.1.1.0/32, ubest/mbest: 2/0, attached
-    *via 10.1.1.0, Lo2, [0/0], 00:32:49, local
-    *via 10.1.1.0, Lo2, [0/0], 00:32:49, direct
+    *via 10.1.1.0, Lo2, [0/0], 00:29:04, local
+    *via 10.1.1.0, Lo2, [0/0], 00:29:04, direct
 10.2.1.0/31, ubest/mbest: 1/0, attached
-    *via 10.2.1.0, Eth1/1, [0/0], 00:32:51, direct
+    *via 10.2.1.0, Eth1/1, [0/0], 00:27:52, direct
 10.2.1.0/32, ubest/mbest: 1/0, attached
-    *via 10.2.1.0, Eth1/1, [0/0], 00:32:51, local
+    *via 10.2.1.0, Eth1/1, [0/0], 00:27:52, local
 10.2.1.2/31, ubest/mbest: 1/0, attached
-    *via 10.2.1.2, Eth1/2, [0/0], 00:32:51, direct
+    *via 10.2.1.2, Eth1/2, [0/0], 00:27:52, direct
 10.2.1.2/32, ubest/mbest: 1/0, attached
-    *via 10.2.1.2, Eth1/2, [0/0], 00:32:51, local
+    *via 10.2.1.2, Eth1/2, [0/0], 00:27:52, local
 10.2.1.4/31, ubest/mbest: 1/0, attached
-    *via 10.2.1.4, Eth1/3, [0/0], 00:32:50, direct
+    *via 10.2.1.4, Eth1/3, [0/0], 00:27:52, direct
 10.2.1.4/32, ubest/mbest: 1/0, attached
-    *via 10.2.1.4, Eth1/3, [0/0], 00:32:50, local
+    *via 10.2.1.4, Eth1/3, [0/0], 00:27:52, local
 ```
+### Вывод l2vpn evpn
+```
+Spine-1# sh bgp l2vpn evpn
+BGP routing table information for VRF default, address family L2VPN EVPN
+BGP table version is 14, Local Router ID is 10.0.1.0
+Status: s-suppressed, x-deleted, S-stale, d-dampened, h-history, *-valid, >-best
+Path type: i-internal, e-external, c-confed, l-local, a-aggregate, r-redist, I-i
+njected
+Origin codes: i - IGP, e - EGP, ? - incomplete, | - multipath, & - backup, 2 - b
+est2
 
+   Network            Next Hop            Metric     LocPrf     Weight Path
+Route Distinguisher: 10.0.0.1:32777
+*>e[2]:[0]:[0]:[48]:[0050.0000.0a00]:[0]:[0.0.0.0]/216
+                      10.0.0.1                                       0 65501 i
+*>e[2]:[0]:[0]:[48]:[0050.7966.6801]:[0]:[0.0.0.0]/216
+                      10.0.0.1                                       0 65501 i
+*>e[3]:[0]:[32]:[10.0.0.1]/88
+                      10.0.0.1                                       0 65501 i
+
+Route Distinguisher: 10.0.0.2:32777
+*>e[2]:[0]:[0]:[48]:[0050.0000.0a01]:[0]:[0.0.0.0]/216
+                      10.0.0.2                                       0 65502 i
+*>e[2]:[0]:[0]:[48]:[0050.7966.6807]:[0]:[0.0.0.0]/216
+                      10.0.0.2                                       0 65502 i
+*>e[3]:[0]:[32]:[10.0.0.2]/88
+                      10.0.0.2                                       0 65502 i
+
+Route Distinguisher: 10.0.0.3:32777
+*>e[2]:[0]:[0]:[48]:[0050.7966.6808]:[0]:[0.0.0.0]/216
+                      10.0.0.3                                       0 65503 i
+*>e[2]:[0]:[0]:[48]:[0050.7966.6809]:[0]:[0.0.0.0]/216
+                      10.0.0.3                                       0 65503 i
+*>e[3]:[0]:[32]:[10.0.0.3]/88
+                      10.0.0.3                                       0 65503 i
+
+```
 
 </p>
 </details>
