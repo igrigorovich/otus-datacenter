@@ -3,3 +3,4 @@
 - [ДЗ-2. Построение Underlay сети(OSPF)](Lab2/)
 - [ДЗ-3. Построение Underlay сети(ISIS)](Lab3/)
 - [ДЗ-4. Построение Underlay сети(BGP)](Lab4/)
+- [ДЗ-5. VxLAN. EVPN L2](Lab5/)
