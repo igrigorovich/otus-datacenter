@@ -5,3 +5,4 @@
 - [ДЗ-4. Построение Underlay сети(BGP)](Lab4/)
 - [ДЗ-5. VxLAN. EVPN L2](Lab5/)
 - [ДЗ-6. VxLAN. EVPN L3](Lab6/)
+- [ДЗ-7. VXLAN. Multihoming](Lab7/)
