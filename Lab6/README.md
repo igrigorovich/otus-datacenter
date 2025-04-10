@@ -475,15 +475,6 @@ router bgp 65501
     inherit peer SPINES
   neighbor 10.2.2.0
     inherit peer SPINES
-evpn
-  vni 10010 l2
-    rd auto
-    route-target import auto
-    route-target export auto
-  vni 10020 l2
-    rd auto
-    route-target import auto
-    route-target export auto
 
 ```
 ### Вывод маршрутной информации
@@ -835,15 +826,6 @@ router bgp 65502
     inherit peer SPINES
   neighbor 10.2.2.2
     inherit peer SPINES
-evpn
-  vni 10010 l2
-    rd auto
-    route-target import auto
-    route-target export auto
-  vni 10020 l2
-    rd auto
-    route-target import auto
-    route-target export auto
 ```
 ### Вывод маршрутной информации
 ```
@@ -1194,15 +1176,6 @@ router bgp 65503
     inherit peer SPINES
   neighbor 10.2.2.4
     inherit peer SPINES
-evpn
-  vni 10010 l2
-    rd auto
-    route-target import auto
-    route-target export auto
-  vni 10020 l2
-    rd auto
-    route-target import auto
-    route-target export auto
 ```
 ### Вывод маршрутной информации
 ```
