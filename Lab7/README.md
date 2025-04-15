@@ -18,6 +18,7 @@
 ```
 nv overlay evpn
 feature bgp
+feature pim
 
 route-map NH_UNCHANGED permit 10
   set ip next-hop unchanged
@@ -26,6 +27,7 @@ route-map REDISTRIBUTE_CONNECTED permit 10
 route-map RM_Leaves_BGP permit 10
   match as-number 65501-65599
 
+
 interface Ethernet1/1
   description to leaf-1
   no switchport
@@ -33,6 +35,7 @@ interface Ethernet1/1
   port-type fabric
   no ip redirects
   ip address 10.2.1.0/31
+  ip pim sparse-mode
   no shutdown
 
 interface Ethernet1/2
@@ -42,6 +45,7 @@ interface Ethernet1/2
   port-type fabric
   no ip redirects
   ip address 10.2.1.2/31
+  ip pim sparse-mode
   no shutdown
 
 interface Ethernet1/3
@@ -50,6 +54,16 @@ interface Ethernet1/3
   port-type fabric
   no ip redirects
   ip address 10.2.1.4/31
+  ip pim sparse-mode
+  no shutdown
+
+interface Ethernet1/4
+  no switchport
+  mtu 9216
+  port-type fabric
+  no ip redirects
+  ip address 10.2.1.6/31
+  ip pim sparse-mode
   no shutdown
 
 interface loopback1
@@ -66,9 +80,10 @@ router bgp 65000
   address-family ipv4 unicast
     redistribute direct route-map REDISTRIBUTE_CONNECTED
     maximum-paths 10
-  address-family l2vpn evpn
+ address-family l2vpn evpn
     maximum-paths 10
     retain route-target all
+    advertise-pip
   neighbor 10.0.0.0/24 remote-as route-map RM_Leaves_BGP
     remote-as external
     update-source loopback1
@@ -91,88 +106,153 @@ IP Route Table for VRF "default"
 '%<string>' in via output denotes VRF <string>
 
 10.0.0.1/32, ubest/mbest: 1/0
-    *via 10.2.1.1, [20/0], 00:22:30, bgp-65000, external, tag 65501
+    *via 10.2.1.1, [20/0], 01:49:23, bgp-65000, external, tag 65501
 10.0.0.2/32, ubest/mbest: 1/0
-    *via 10.2.1.3, [20/0], 00:28:30, bgp-65000, external, tag 65502
+    *via 10.2.1.3, [20/0], 01:49:23, bgp-65000, external, tag 65502
 10.0.0.3/32, ubest/mbest: 1/0
-    *via 10.2.1.5, [20/0], 00:28:14, bgp-65000, external, tag 65503
+    *via 10.2.1.5, [20/0], 01:14:56, bgp-65000, external, tag 65503
+10.0.0.4/32, ubest/mbest: 1/0
+    *via 10.2.1.7, [20/0], 01:15:21, bgp-65000, external, tag 65504
+10.0.0.253/32, ubest/mbest: 1/0
+    *via 10.2.1.7, [20/0], 01:15:21, bgp-65000, external, tag 65504
+10.0.0.254/32, ubest/mbest: 1/0
+    *via 10.2.1.3, [20/0], 01:49:23, bgp-65000, external, tag 65502
 10.0.1.0/32, ubest/mbest: 2/0, attached
-    *via 10.0.1.0, Lo1, [0/0], 18:04:06, local
-    *via 10.0.1.0, Lo1, [0/0], 18:04:06, direct
+    *via 10.0.1.0, Lo1, [0/0], 4d17h, local
+    *via 10.0.1.0, Lo1, [0/0], 4d17h, direct
 10.1.0.1/32, ubest/mbest: 1/0
-    *via 10.2.1.1, [20/0], 00:22:30, bgp-65000, external, tag 65501
+    *via 10.2.1.1, [20/0], 01:52:36, bgp-65000, external, tag 65501
 10.1.0.2/32, ubest/mbest: 1/0
-    *via 10.2.1.3, [20/0], 00:28:30, bgp-65000, external, tag 65502
+    *via 10.2.1.3, [20/0], 01:52:36, bgp-65000, external, tag 65502
 10.1.0.3/32, ubest/mbest: 1/0
-    *via 10.2.1.5, [20/0], 00:28:14, bgp-65000, external, tag 65503
+    *via 10.2.1.5, [20/0], 01:52:34, bgp-65000, external, tag 65503
+10.1.0.4/32, ubest/mbest: 1/0
+    *via 10.2.1.7, [20/0], 01:52:52, bgp-65000, external, tag 65504
 10.1.1.0/32, ubest/mbest: 2/0, attached
-    *via 10.1.1.0, Lo2, [0/0], 18:09:27, local
-    *via 10.1.1.0, Lo2, [0/0], 18:09:27, direct
+    *via 10.1.1.0, Lo2, [0/0], 4d17h, local
+    *via 10.1.1.0, Lo2, [0/0], 4d17h, direct
 10.2.1.0/31, ubest/mbest: 1/0, attached
-    *via 10.2.1.0, Eth1/1, [0/0], 18:08:06, direct
+    *via 10.2.1.0, Eth1/1, [0/0], 4d17h, direct
 10.2.1.0/32, ubest/mbest: 1/0, attached
-    *via 10.2.1.0, Eth1/1, [0/0], 18:08:06, local
+    *via 10.2.1.0, Eth1/1, [0/0], 4d17h, local
 10.2.1.2/31, ubest/mbest: 1/0, attached
-    *via 10.2.1.2, Eth1/2, [0/0], 18:08:06, direct
+    *via 10.2.1.2, Eth1/2, [0/0], 4d17h, direct
 10.2.1.2/32, ubest/mbest: 1/0, attached
-    *via 10.2.1.2, Eth1/2, [0/0], 18:08:06, local
+    *via 10.2.1.2, Eth1/2, [0/0], 4d17h, local
 10.2.1.4/31, ubest/mbest: 1/0, attached
-    *via 10.2.1.4, Eth1/3, [0/0], 18:08:06, direct
+    *via 10.2.1.4, Eth1/3, [0/0], 4d17h, direct
 10.2.1.4/32, ubest/mbest: 1/0, attached
-    *via 10.2.1.4, Eth1/3, [0/0], 18:08:06, local
+    *via 10.2.1.4, Eth1/3, [0/0], 4d17h, local
+10.2.1.6/31, ubest/mbest: 1/0, attached
+    *via 10.2.1.6, Eth1/4, [0/0], 4d17h, direct
+10.2.1.6/32, ubest/mbest: 1/0, attached
+    *via 10.2.1.6, Eth1/4, [0/0], 4d17h, local
 ```
 ### Вывод l2vpn evpn
 ```
-Spine-1# sh bgp l2vpn evpn
+Spine-1(config-router-af)# sh bgp l2vpn evpn
 BGP routing table information for VRF default, address family L2VPN EVPN
-BGP table version is 186, Local Router ID is 10.0.1.0
+BGP table version is 1451, Local Router ID is 10.0.1.0
 Status: s-suppressed, x-deleted, S-stale, d-dampened, h-history, *-valid, >-best
 Path type: i-internal, e-external, c-confed, l-local, a-aggregate, r-redist, I-injected
 Origin codes: i - IGP, e - EGP, ? - incomplete, | - multipath, & - backup, 2 - best2
 
    Network            Next Hop            Metric     LocPrf     Weight Path
+Route Distinguisher: 10.0.0.1:4
+*>e[2]:[0]:[0]:[48]:[5004.0000.1b08]:[0]:[0.0.0.0]/216
+                      10.0.0.254                                     0 65501 i
+
 Route Distinguisher: 10.0.0.1:32777
 *>e[2]:[0]:[0]:[48]:[0050.0000.0100]:[0]:[0.0.0.0]/216
                       10.0.0.1                                       0 65501 i
-*>e[2]:[0]:[0]:[48]:[167d.0352.f25c]:[0]:[0.0.0.0]/216
-                      10.0.0.1                                       0 65501 i
+*>e[2]:[0]:[0]:[48]:[0050.0000.0d00]:[0]:[0.0.0.0]/216
+                      10.0.0.254                                     0 65501 i
+*>e[2]:[0]:[0]:[48]:[5004.0000.1b08]:[0]:[0.0.0.0]/216
+                      10.0.0.254                                     0 65501 i
 *>e[2]:[0]:[0]:[48]:[0050.0000.0100]:[32]:[192.168.10.11]/272
                       10.0.0.1                                       0 65501 i
-*>e[3]:[0]:[32]:[10.0.0.1]/88
-                      10.0.0.1                                       0 65501 i
+*>e[2]:[0]:[0]:[48]:[0050.0000.0d00]:[32]:[192.168.10.30]/272
+                      10.0.0.254                                     0 65501 i
+*>e[3]:[0]:[32]:[10.0.0.254]/88
+                      10.0.0.254                                     0 65501 i
 
 Route Distinguisher: 10.0.0.1:32787
-*>e[3]:[0]:[32]:[10.0.0.1]/88
-                      10.0.0.1                                       0 65501 i
+*>e[2]:[0]:[0]:[48]:[5004.0000.1b08]:[0]:[0.0.0.0]/216
+                      10.0.0.254                                     0 65501 i
+*>e[3]:[0]:[32]:[10.0.0.254]/88
+                      10.0.0.254                                     0 65501 i
+
+Route Distinguisher: 10.0.0.2:4
+*>e[2]:[0]:[0]:[48]:[5005.0000.1b08]:[0]:[0.0.0.0]/216
+                      10.0.0.254                                     0 65502 i
 
 Route Distinguisher: 10.0.0.2:32777
-*>e[3]:[0]:[32]:[10.0.0.2]/88
-                      10.0.0.2                                       0 65502 i
+*>e[2]:[0]:[0]:[48]:[0050.0000.0d00]:[0]:[0.0.0.0]/216
+                      10.0.0.254                                     0 65502 i
+*>e[2]:[0]:[0]:[48]:[5005.0000.1b08]:[0]:[0.0.0.0]/216
+                      10.0.0.254                                     0 65502 i
+*>e[2]:[0]:[0]:[48]:[0050.0000.0d00]:[32]:[192.168.10.30]/272
+                      10.0.0.254                                     0 65502 i
+*>e[3]:[0]:[32]:[10.0.0.254]/88
+                      10.0.0.254                                     0 65502 i
 
 Route Distinguisher: 10.0.0.2:32787
 *>e[2]:[0]:[0]:[48]:[0050.0000.0700]:[0]:[0.0.0.0]/216
                       10.0.0.2                                       0 65502 i
+*>e[2]:[0]:[0]:[48]:[5005.0000.1b08]:[0]:[0.0.0.0]/216
+                      10.0.0.254                                     0 65502 i
 *>e[2]:[0]:[0]:[48]:[0050.0000.0700]:[32]:[192.168.20.12]/272
                       10.0.0.2                                       0 65502 i
-*>e[3]:[0]:[32]:[10.0.0.2]/88
-                      10.0.0.2                                       0 65502 i
+*>e[3]:[0]:[32]:[10.0.0.254]/88
+                      10.0.0.254                                     0 65502 i
+
+Route Distinguisher: 10.0.0.3:4
+*>e[2]:[0]:[0]:[48]:[5006.0000.1b08]:[0]:[0.0.0.0]/216
+                      10.0.0.253                                     0 65503 i
 
 Route Distinguisher: 10.0.0.3:32777
 *>e[2]:[0]:[0]:[48]:[0050.0000.0800]:[0]:[0.0.0.0]/216
                       10.0.0.3                                       0 65503 i
-*>e[2]:[0]:[0]:[48]:[0050.0000.0900]:[0]:[0.0.0.0]/216
-                      10.0.0.3                                       0 65503 i
+*>e[2]:[0]:[0]:[48]:[5006.0000.1b08]:[0]:[0.0.0.0]/216
+                      10.0.0.253                                     0 65503 i
 *>e[2]:[0]:[0]:[48]:[0050.0000.0800]:[32]:[192.168.10.13]/272
                       10.0.0.3                                       0 65503 i
-*>e[2]:[0]:[0]:[48]:[0050.0000.0900]:[32]:[192.168.10.14]/272
-                      10.0.0.3                                       0 65503 i
-*>e[3]:[0]:[32]:[10.0.0.3]/88
-                      10.0.0.3                                       0 65503 i
+*>e[3]:[0]:[32]:[10.0.0.253]/88
+                      10.0.0.253                                     0 65503 i
 
 Route Distinguisher: 10.0.0.3:32787
-*>e[3]:[0]:[32]:[10.0.0.3]/88
-                      10.0.0.3                                       0 65503 i
+*>e[2]:[0]:[0]:[48]:[0050.0000.0f00]:[0]:[0.0.0.0]/216
+                      10.0.0.253                                     0 65503 i
+*>e[2]:[0]:[0]:[48]:[5006.0000.1b08]:[0]:[0.0.0.0]/216
+                      10.0.0.253                                     0 65503 i
+*>e[2]:[0]:[0]:[48]:[0050.0000.0f00]:[32]:[192.168.20.30]/272
+                      10.0.0.253                                     0 65503 i
+*>e[3]:[0]:[32]:[10.0.0.253]/88
+                      10.0.0.253                                     0 65503 i
 
+Route Distinguisher: 10.0.0.4:4
+*>e[2]:[0]:[0]:[48]:[500a.0000.1b08]:[0]:[0.0.0.0]/216
+                      10.0.0.253                                     0 65504 i
+
+Route Distinguisher: 10.0.0.4:32777
+*>e[2]:[0]:[0]:[48]:[0050.0000.0900]:[0]:[0.0.0.0]/216
+                      10.0.0.4                                       0 65504 i
+*>e[2]:[0]:[0]:[48]:[500a.0000.1b08]:[0]:[0.0.0.0]/216
+                      10.0.0.253                                     0 65504 i
+*>e[2]:[0]:[0]:[48]:[0050.0000.0900]:[32]:[192.168.10.14]/272
+                      10.0.0.4                                       0 65504 i
+*>e[3]:[0]:[32]:[10.0.0.253]/88
+                      10.0.0.253                                     0 65504 i
+
+Route Distinguisher: 10.0.0.4:32787
+*>e[2]:[0]:[0]:[48]:[0050.0000.0f00]:[0]:[0.0.0.0]/216
+                      10.0.0.253                                     0 65504 i
+*>e[2]:[0]:[0]:[48]:[500a.0000.1b08]:[0]:[0.0.0.0]/216
+                      10.0.0.253                                     0 65504 i
+*>e[2]:[0]:[0]:[48]:[0050.0000.0f00]:[32]:[192.168.20.30]/272
+                      10.0.0.253                                     0 65504 i
+*>e[3]:[0]:[32]:[10.0.0.253]/88
+                      10.0.0.253                                     0 65504 i
 ```
 
 </p>
@@ -185,6 +265,7 @@ Route Distinguisher: 10.0.0.3:32787
 ```
 nv overlay evpn
 feature bgp
+feature pim
 
 route-map NH_UNCHANGED permit 10
   set ip next-hop unchanged
@@ -200,6 +281,7 @@ interface Ethernet1/1
   port-type fabric
   no ip redirects
   ip address 10.2.2.0/31
+  ip pim sparse-mode
   no shutdown
 
 interface Ethernet1/2
@@ -209,6 +291,7 @@ interface Ethernet1/2
   port-type fabric
   no ip redirects
   ip address 10.2.2.2/31
+  ip pim sparse-mode
   no shutdown
 
 interface Ethernet1/3
@@ -217,6 +300,16 @@ interface Ethernet1/3
   port-type fabric
   no ip redirects
   ip address 10.2.2.4/31
+  ip pim sparse-mode
+  no shutdown
+
+interface Ethernet1/4
+  no switchport
+  mtu 9216
+  port-type fabric
+  no ip redirects
+  ip address 10.2.2.6/31
+  ip pim sparse-mode
   no shutdown
 
 interface loopback1
@@ -233,9 +326,10 @@ router bgp 65000
   address-family ipv4 unicast
     redistribute direct route-map REDISTRIBUTE_CONNECTED
     maximum-paths 10
-  address-family l2vpn evpn
+ address-family l2vpn evpn
     maximum-paths 10
     retain route-target all
+    advertise-pip
   neighbor 10.0.0.0/24 remote-as route-map RM_Leaves_BGP
     remote-as external
     update-source loopback1
@@ -258,87 +352,153 @@ IP Route Table for VRF "default"
 '%<string>' in via output denotes VRF <string>
 
 10.0.0.1/32, ubest/mbest: 1/0
-    *via 10.2.2.1, [20/0], 00:22:30, bgp-65000, external, tag 65501
+    *via 10.2.2.1, [20/0], 01:49:24, bgp-65000, external, tag 65501
 10.0.0.2/32, ubest/mbest: 1/0
-    *via 10.2.2.3, [20/0], 00:28:30, bgp-65000, external, tag 65502
+    *via 10.2.2.3, [20/0], 01:49:24, bgp-65000, external, tag 65502
 10.0.0.3/32, ubest/mbest: 1/0
-    *via 10.2.2.5, [20/0], 00:28:14, bgp-65000, external, tag 65503
+    *via 10.2.2.5, [20/0], 01:14:56, bgp-65000, external, tag 65503
+10.0.0.4/32, ubest/mbest: 1/0
+    *via 10.2.2.7, [20/0], 01:15:21, bgp-65000, external, tag 65504
+10.0.0.253/32, ubest/mbest: 1/0
+    *via 10.2.2.7, [20/0], 01:15:21, bgp-65000, external, tag 65504
+10.0.0.254/32, ubest/mbest: 1/0
+    *via 10.2.2.3, [20/0], 01:49:24, bgp-65000, external, tag 65502
 10.0.2.0/32, ubest/mbest: 2/0, attached
-    *via 10.0.2.0, Lo1, [0/0], 18:04:06, local
-    *via 10.0.2.0, Lo1, [0/0], 18:04:06, direct
+    *via 10.0.2.0, Lo1, [0/0], 4d17h, local
+    *via 10.0.2.0, Lo1, [0/0], 4d17h, direct
 10.1.0.1/32, ubest/mbest: 1/0
-    *via 10.2.2.1, [20/0], 00:22:30, bgp-65000, external, tag 65501
+    *via 10.2.2.1, [20/0], 01:52:36, bgp-65000, external, tag 65501
 10.1.0.2/32, ubest/mbest: 1/0
-    *via 10.2.2.3, [20/0], 00:28:30, bgp-65000, external, tag 65502
+    *via 10.2.2.3, [20/0], 01:52:36, bgp-65000, external, tag 65502
 10.1.0.3/32, ubest/mbest: 1/0
-    *via 10.2.2.5, [20/0], 00:28:14, bgp-65000, external, tag 65503
+    *via 10.2.2.5, [20/0], 01:52:35, bgp-65000, external, tag 65503
+10.1.0.4/32, ubest/mbest: 1/0
+    *via 10.2.2.7, [20/0], 01:52:53, bgp-65000, external, tag 65504
 10.1.2.0/32, ubest/mbest: 2/0, attached
-    *via 10.1.2.0, Lo2, [0/0], 18:09:23, local
-    *via 10.1.2.0, Lo2, [0/0], 18:09:23, direct
+    *via 10.1.2.0, Lo2, [0/0], 4d17h, local
+    *via 10.1.2.0, Lo2, [0/0], 4d17h, direct
 10.2.2.0/31, ubest/mbest: 1/0, attached
-    *via 10.2.2.0, Eth1/1, [0/0], 18:08:09, direct
+    *via 10.2.2.0, Eth1/1, [0/0], 4d17h, direct
 10.2.2.0/32, ubest/mbest: 1/0, attached
-    *via 10.2.2.0, Eth1/1, [0/0], 18:08:09, local
+    *via 10.2.2.0, Eth1/1, [0/0], 4d17h, local
 10.2.2.2/31, ubest/mbest: 1/0, attached
-    *via 10.2.2.2, Eth1/2, [0/0], 18:08:08, direct
+    *via 10.2.2.2, Eth1/2, [0/0], 4d17h, direct
 10.2.2.2/32, ubest/mbest: 1/0, attached
-    *via 10.2.2.2, Eth1/2, [0/0], 18:08:08, local
+    *via 10.2.2.2, Eth1/2, [0/0], 4d17h, local
 10.2.2.4/31, ubest/mbest: 1/0, attached
-    *via 10.2.2.4, Eth1/3, [0/0], 18:08:08, direct
+    *via 10.2.2.4, Eth1/3, [0/0], 4d17h, direct
 10.2.2.4/32, ubest/mbest: 1/0, attached
-    *via 10.2.2.4, Eth1/3, [0/0], 18:08:08, local
+    *via 10.2.2.4, Eth1/3, [0/0], 4d17h, local
+10.2.2.6/31, ubest/mbest: 1/0, attached
+    *via 10.2.2.6, Eth1/4, [0/0], 4d17h, direct
+10.2.2.6/32, ubest/mbest: 1/0, attached
+    *via 10.2.2.6, Eth1/4, [0/0], 4d17h, local
 ```
 ### Вывод l2vpn evpn
 ```
-Spine-2# sh bgp l2vpn evpn
+Spine-2(config-router-af)# sh bgp l2vpn evpn
 BGP routing table information for VRF default, address family L2VPN EVPN
-BGP table version is 201, Local Router ID is 10.0.2.0
+BGP table version is 1433, Local Router ID is 10.0.2.0
 Status: s-suppressed, x-deleted, S-stale, d-dampened, h-history, *-valid, >-best
 Path type: i-internal, e-external, c-confed, l-local, a-aggregate, r-redist, I-injected
 Origin codes: i - IGP, e - EGP, ? - incomplete, | - multipath, & - backup, 2 - best2
 
    Network            Next Hop            Metric     LocPrf     Weight Path
+Route Distinguisher: 10.0.0.1:4
+*>e[2]:[0]:[0]:[48]:[5004.0000.1b08]:[0]:[0.0.0.0]/216
+                      10.0.0.254                                     0 65501 i
+
 Route Distinguisher: 10.0.0.1:32777
 *>e[2]:[0]:[0]:[48]:[0050.0000.0100]:[0]:[0.0.0.0]/216
                       10.0.0.1                                       0 65501 i
-*>e[2]:[0]:[0]:[48]:[167d.0352.f25c]:[0]:[0.0.0.0]/216
-                      10.0.0.1                                       0 65501 i
+*>e[2]:[0]:[0]:[48]:[0050.0000.0d00]:[0]:[0.0.0.0]/216
+                      10.0.0.254                                     0 65501 i
+*>e[2]:[0]:[0]:[48]:[5004.0000.1b08]:[0]:[0.0.0.0]/216
+                      10.0.0.254                                     0 65501 i
 *>e[2]:[0]:[0]:[48]:[0050.0000.0100]:[32]:[192.168.10.11]/272
                       10.0.0.1                                       0 65501 i
-*>e[3]:[0]:[32]:[10.0.0.1]/88
-                      10.0.0.1                                       0 65501 i
+*>e[2]:[0]:[0]:[48]:[0050.0000.0d00]:[32]:[192.168.10.30]/272
+                      10.0.0.254                                     0 65501 i
+*>e[3]:[0]:[32]:[10.0.0.254]/88
+                      10.0.0.254                                     0 65501 i
 
 Route Distinguisher: 10.0.0.1:32787
-*>e[3]:[0]:[32]:[10.0.0.1]/88
-                      10.0.0.1                                       0 65501 i
+*>e[2]:[0]:[0]:[48]:[5004.0000.1b08]:[0]:[0.0.0.0]/216
+                      10.0.0.254                                     0 65501 i
+*>e[3]:[0]:[32]:[10.0.0.254]/88
+                      10.0.0.254                                     0 65501 i
+
+Route Distinguisher: 10.0.0.2:4
+*>e[2]:[0]:[0]:[48]:[5005.0000.1b08]:[0]:[0.0.0.0]/216
+                      10.0.0.254                                     0 65502 i
 
 Route Distinguisher: 10.0.0.2:32777
-*>e[3]:[0]:[32]:[10.0.0.2]/88
-                      10.0.0.2                                       0 65502 i
+*>e[2]:[0]:[0]:[48]:[0050.0000.0d00]:[0]:[0.0.0.0]/216
+                      10.0.0.254                                     0 65502 i
+*>e[2]:[0]:[0]:[48]:[5005.0000.1b08]:[0]:[0.0.0.0]/216
+                      10.0.0.254                                     0 65502 i
+*>e[2]:[0]:[0]:[48]:[0050.0000.0d00]:[32]:[192.168.10.30]/272
+                      10.0.0.254                                     0 65502 i
+*>e[3]:[0]:[32]:[10.0.0.254]/88
+                      10.0.0.254                                     0 65502 i
 
 Route Distinguisher: 10.0.0.2:32787
 *>e[2]:[0]:[0]:[48]:[0050.0000.0700]:[0]:[0.0.0.0]/216
                       10.0.0.2                                       0 65502 i
+*>e[2]:[0]:[0]:[48]:[5005.0000.1b08]:[0]:[0.0.0.0]/216
+                      10.0.0.254                                     0 65502 i
 *>e[2]:[0]:[0]:[48]:[0050.0000.0700]:[32]:[192.168.20.12]/272
                       10.0.0.2                                       0 65502 i
-*>e[3]:[0]:[32]:[10.0.0.2]/88
-                      10.0.0.2                                       0 65502 i
+*>e[3]:[0]:[32]:[10.0.0.254]/88
+                      10.0.0.254                                     0 65502 i
+
+Route Distinguisher: 10.0.0.3:4
+*>e[2]:[0]:[0]:[48]:[5006.0000.1b08]:[0]:[0.0.0.0]/216
+                      10.0.0.253                                     0 65503 i
 
 Route Distinguisher: 10.0.0.3:32777
 *>e[2]:[0]:[0]:[48]:[0050.0000.0800]:[0]:[0.0.0.0]/216
                       10.0.0.3                                       0 65503 i
-*>e[2]:[0]:[0]:[48]:[0050.0000.0900]:[0]:[0.0.0.0]/216
-                      10.0.0.3                                       0 65503 i
+*>e[2]:[0]:[0]:[48]:[5006.0000.1b08]:[0]:[0.0.0.0]/216
+                      10.0.0.253                                     0 65503 i
 *>e[2]:[0]:[0]:[48]:[0050.0000.0800]:[32]:[192.168.10.13]/272
                       10.0.0.3                                       0 65503 i
-*>e[2]:[0]:[0]:[48]:[0050.0000.0900]:[32]:[192.168.10.14]/272
-                      10.0.0.3                                       0 65503 i
-*>e[3]:[0]:[32]:[10.0.0.3]/88
-                      10.0.0.3                                       0 65503 i
+*>e[3]:[0]:[32]:[10.0.0.253]/88
+                      10.0.0.253                                     0 65503 i
 
 Route Distinguisher: 10.0.0.3:32787
-*>e[3]:[0]:[32]:[10.0.0.3]/88
-                      10.0.0.3                                       0 65503 i
+*>e[2]:[0]:[0]:[48]:[0050.0000.0f00]:[0]:[0.0.0.0]/216
+                      10.0.0.253                                     0 65503 i
+*>e[2]:[0]:[0]:[48]:[5006.0000.1b08]:[0]:[0.0.0.0]/216
+                      10.0.0.253                                     0 65503 i
+*>e[2]:[0]:[0]:[48]:[0050.0000.0f00]:[32]:[192.168.20.30]/272
+                      10.0.0.253                                     0 65503 i
+*>e[3]:[0]:[32]:[10.0.0.253]/88
+                      10.0.0.253                                     0 65503 i
+
+Route Distinguisher: 10.0.0.4:4
+*>e[2]:[0]:[0]:[48]:[500a.0000.1b08]:[0]:[0.0.0.0]/216
+                      10.0.0.253                                     0 65504 i
+
+Route Distinguisher: 10.0.0.4:32777
+*>e[2]:[0]:[0]:[48]:[0050.0000.0900]:[0]:[0.0.0.0]/216
+                      10.0.0.4                                       0 65504 i
+*>e[2]:[0]:[0]:[48]:[500a.0000.1b08]:[0]:[0.0.0.0]/216
+                      10.0.0.253                                     0 65504 i
+*>e[2]:[0]:[0]:[48]:[0050.0000.0900]:[32]:[192.168.10.14]/272
+                      10.0.0.4                                       0 65504 i
+*>e[3]:[0]:[32]:[10.0.0.253]/88
+                      10.0.0.253                                     0 65504 i
+
+Route Distinguisher: 10.0.0.4:32787
+*>e[2]:[0]:[0]:[48]:[0050.0000.0f00]:[0]:[0.0.0.0]/216
+                      10.0.0.253                                     0 65504 i
+*>e[2]:[0]:[0]:[48]:[500a.0000.1b08]:[0]:[0.0.0.0]/216
+                      10.0.0.253                                     0 65504 i
+*>e[2]:[0]:[0]:[48]:[0050.0000.0f00]:[32]:[192.168.20.30]/272
+                      10.0.0.253                                     0 65504 i
+*>e[3]:[0]:[32]:[10.0.0.253]/88
+                      10.0.0.253                                     0 65504 i
 ```
 
 </p>
