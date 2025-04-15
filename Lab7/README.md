@@ -976,6 +976,61 @@ Ip Address      Age      Mac Address    Vlan Physical-ifindex    Flags    Remote
 192.168.20.12   02:00:47 0050.0000.0700   20 (null)              R        10.0.0.2    
 192.168.20.30   02:07:17 0050.0000.0f00   20 (null)              R        10.0.0.253  
 ```
+### Вывод VPC
+```
+Leaf-1# sh vpc
+Legend:
+                (*) - local vPC is down, forwarding via vPC peer-link
+
+vPC domain id                     : 1   
+Peer status                       : peer adjacency formed ok      
+vPC keep-alive status             : peer is alive                 
+Configuration consistency status  : success 
+Per-vlan consistency status       : success                       
+Type-2 consistency status         : success 
+vPC role                          : primary                       
+Number of vPCs configured         : 1   
+Peer Gateway                      : Enabled
+Dual-active excluded VLANs        : -
+Graceful Consistency Check        : Enabled
+Auto-recovery status              : Enabled, timer is off.(timeout = 240s)
+Delay-restore status              : Timer is off.(timeout = 60s)
+Delay-restore SVI status          : Timer is off.(timeout = 10s)
+Delay-restore Orphan-port status  : Timer is off.(timeout = 0s)
+Operational Layer3 Peer-router    : Enabled
+Virtual-peerlink mode             : Enabled
+
+vPC Peer-link status
+---------------------------------------------------------------------
+id    Port   Status Active vlans    
+--    ----   ------ -------------------------------------------------
+1     Po1000 up     1-2,10,20                                                            
+
+vPC status
+----------------------------------------------------------------------------
+Id    Port          Status Consistency Reason                Active vlans
+--    ------------  ------ ----------- ------                ---------------
+6     Po6           up     success     success               1-2,10,20                   
+```
+### Вывод port-channel summary
+```
+Leaf-1# sh port-ch sum
+Flags:  D - Down        P - Up in port-channel (members)
+        I - Individual  H - Hot-standby (LACP only)
+        s - Suspended   r - Module-removed
+        b - BFD Session Wait
+        S - Switched    R - Routed
+        U - Up (port-channel)
+        p - Up in delay-lacp mode (member)
+        M - Not in use. Min-links not met
+--------------------------------------------------------------------------------
+Group Port-       Type     Protocol  Member Ports
+      Channel
+--------------------------------------------------------------------------------
+6     Po6(SU)     Eth      LACP      Eth1/6(P)    
+1000  Po1000(SU)  Eth      NONE      --
+```
+
   </p>
 </details>
 
@@ -1455,6 +1510,61 @@ Ip Address      Age      Mac Address    Vlan Physical-ifindex    Flags    Remote
 192.168.10.13   02:04:46 0050.0000.0800   10 (null)              R        10.0.0.3    
 192.168.20.30   02:07:17 0050.0000.0f00   20 (null)              R        10.0.0.253  
 ```
+### Вывод VPC
+```
+Leaf-2# sh vpc
+Legend:
+                (*) - local vPC is down, forwarding via vPC peer-link
+
+vPC domain id                     : 1   
+Peer status                       : peer adjacency formed ok      
+vPC keep-alive status             : peer is alive                 
+Configuration consistency status  : success 
+Per-vlan consistency status       : success                       
+Type-2 consistency status         : success 
+vPC role                          : secondary                     
+Number of vPCs configured         : 1   
+Peer Gateway                      : Enabled
+Dual-active excluded VLANs        : -
+Graceful Consistency Check        : Enabled
+Auto-recovery status              : Enabled, timer is off.(timeout = 240s)
+Delay-restore status              : Timer is off.(timeout = 60s)
+Delay-restore SVI status          : Timer is off.(timeout = 10s)
+Delay-restore Orphan-port status  : Timer is off.(timeout = 0s)
+Operational Layer3 Peer-router    : Enabled
+Virtual-peerlink mode             : Enabled
+
+vPC Peer-link status
+---------------------------------------------------------------------
+id    Port   Status Active vlans    
+--    ----   ------ -------------------------------------------------
+1     Po1000 up     1-2,10,20                                                            
+
+vPC status
+----------------------------------------------------------------------------
+Id    Port          Status Consistency Reason                Active vlans
+--    ------------  ------ ----------- ------                ---------------
+6     Po6           up     success     success               1-2,10,20
+```
+### Вывод port-channel summary
+```
+Leaf-2# sh port-ch sum
+Flags:  D - Down        P - Up in port-channel (members)
+        I - Individual  H - Hot-standby (LACP only)
+        s - Suspended   r - Module-removed
+        b - BFD Session Wait
+        S - Switched    R - Routed
+        U - Up (port-channel)
+        p - Up in delay-lacp mode (member)
+        M - Not in use. Min-links not met
+--------------------------------------------------------------------------------
+Group Port-       Type     Protocol  Member Ports
+      Channel
+--------------------------------------------------------------------------------
+6     Po6(SU)     Eth      LACP      Eth1/6(P)    
+1000  Po1000(SU)  Eth      NONE      --
+```
+
   </p>
 </details>
 
@@ -1580,7 +1690,6 @@ interface Ethernet1/2
 
 interface Ethernet1/6
   switchport mode trunk
-  switchport access vlan 10
   channel-group 6 mode active
 
 interface Ethernet1/7
@@ -1934,6 +2043,61 @@ Ip Address      Age      Mac Address    Vlan Physical-ifindex    Flags    Remote
 192.168.10.30   02:09:13 0050.0000.0d00   10 (null)              R        10.0.0.254  
 192.168.20.12   02:00:47 0050.0000.0700   20 (null)              R        10.0.0.2    
 ```
+### Вывод VPC
+```
+Leaf-3# sh vpc
+Legend:
+                (*) - local vPC is down, forwarding via vPC peer-link
+
+vPC domain id                     : 2   
+Peer status                       : peer adjacency formed ok      
+vPC keep-alive status             : peer is alive                 
+Configuration consistency status  : success 
+Per-vlan consistency status       : success                       
+Type-2 consistency status         : success 
+vPC role                          : primary                       
+Number of vPCs configured         : 1   
+Peer Gateway                      : Enabled
+Dual-active excluded VLANs        : -
+Graceful Consistency Check        : Enabled
+Auto-recovery status              : Enabled, timer is off.(timeout = 240s)
+Delay-restore status              : Timer is off.(timeout = 60s)
+Delay-restore SVI status          : Timer is off.(timeout = 10s)
+Delay-restore Orphan-port status  : Timer is off.(timeout = 0s)
+Operational Layer3 Peer-router    : Enabled
+Virtual-peerlink mode             : Enabled
+
+vPC Peer-link status
+---------------------------------------------------------------------
+id    Port   Status Active vlans    
+--    ----   ------ -------------------------------------------------
+1     Po1000 up     1-2,10,20                                                            
+
+vPC status
+----------------------------------------------------------------------------
+Id    Port          Status Consistency Reason                Active vlans
+--    ------------  ------ ----------- ------                ---------------
+6     Po6           up     success     success               1-2,10,20
+```
+### Вывод port-channel summary
+```
+Leaf-3# sh port-ch sum
+Flags:  D - Down        P - Up in port-channel (members)
+        I - Individual  H - Hot-standby (LACP only)
+        s - Suspended   r - Module-removed
+        b - BFD Session Wait
+        S - Switched    R - Routed
+        U - Up (port-channel)
+        p - Up in delay-lacp mode (member)
+        M - Not in use. Min-links not met
+--------------------------------------------------------------------------------
+Group Port-       Type     Protocol  Member Ports
+      Channel
+--------------------------------------------------------------------------------
+6     Po6(SU)     Eth      LACP      Eth1/6(P)    
+1000  Po1000(SU)  Eth      NONE      --
+```
+
   </p>
 </details>
 <details>
@@ -2060,7 +2224,6 @@ interface Ethernet1/2
 
 interface Ethernet1/6
   switchport mode trunk
-  switchport access vlan 10
   channel-group 6 mode active
 
 interface Ethernet1/7
@@ -2413,6 +2576,127 @@ Ip Address      Age      Mac Address    Vlan Physical-ifindex    Flags    Remote
 192.168.10.13   02:04:46 0050.0000.0800   10 (null)              R        10.0.0.3    
 192.168.10.30   02:09:37 0050.0000.0d00   10 (null)              R        10.0.0.254  
 192.168.20.12   02:00:47 0050.0000.0700   20 (null)              R        10.0.0.2    
+```
+### Вывод VPC
+```
+Leaf-4# sh vpc
+Legend:
+                (*) - local vPC is down, forwarding via vPC peer-link
+
+vPC domain id                     : 2   
+Peer status                       : peer adjacency formed ok      
+vPC keep-alive status             : peer is alive                 
+Configuration consistency status  : success 
+Per-vlan consistency status       : success                       
+Type-2 consistency status         : success 
+vPC role                          : secondary                     
+Number of vPCs configured         : 1   
+Peer Gateway                      : Enabled
+Dual-active excluded VLANs        : -
+Graceful Consistency Check        : Enabled
+Auto-recovery status              : Enabled, timer is off.(timeout = 240s)
+Delay-restore status              : Timer is off.(timeout = 60s)
+Delay-restore SVI status          : Timer is off.(timeout = 10s)
+Delay-restore Orphan-port status  : Timer is off.(timeout = 0s)
+Operational Layer3 Peer-router    : Enabled
+Virtual-peerlink mode             : Enabled
+
+vPC Peer-link status
+---------------------------------------------------------------------
+id    Port   Status Active vlans    
+--    ----   ------ -------------------------------------------------
+1     Po1000 up     1-2,10,20                                                            
+
+vPC status
+----------------------------------------------------------------------------
+Id    Port          Status Consistency Reason                Active vlans
+--    ------------  ------ ----------- ------                ---------------
+6     Po6           up     success     success               1-2,10,20
+```
+### Вывод port-channel summary
+```
+Leaf-4# sh port-ch sum
+Flags:  D - Down        P - Up in port-channel (members)
+        I - Individual  H - Hot-standby (LACP only)
+        s - Suspended   r - Module-removed
+        b - BFD Session Wait
+        S - Switched    R - Routed
+        U - Up (port-channel)
+        p - Up in delay-lacp mode (member)
+        M - Not in use. Min-links not met
+--------------------------------------------------------------------------------
+Group Port-       Type     Protocol  Member Ports
+      Channel
+--------------------------------------------------------------------------------
+6     Po6(SU)     Eth      LACP      Eth1/6(P)    
+1000  Po1000(SU)  Eth      NONE      --
+```
+
+  </p>
+</details>
+
+<details>
+  <summary><b> SW-MGMT</b></summary>
+  <p>
+ 
+```
+
+```
+### Вывод маршрутной информации
+```
+
+```
+### Вывод маршрутной информации vrf
+```
+
+
+```
+### Вывод l2vpn evpn
+```
+
+```
+  </p>
+</details>
+
+<details>
+  <summary><b> SW1</b></summary>
+  <p>
+ 
+```
+
+```
+### Вывод маршрутной информации
+```
+
+```
+### Вывод маршрутной информации vrf
+```
+```
+### Вывод l2vpn evpn
+```
+```
+  </p>
+</details>
+
+<details>
+  <summary><b> SW2</b></summary>
+  <p>
+ 
+```
+
+```
+### Вывод маршрутной информации
+```
+
+```
+### Вывод маршрутной информации vrf
+```
+
+
+```
+### Вывод l2vpn evpn
+```
+
 ```
   </p>
 </details>
