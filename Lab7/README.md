@@ -2640,20 +2640,124 @@ Group Port-       Type     Protocol  Member Ports
   <p>
  
 ```
+SW_MGMT#sh run
+Building configuration...
 
+Current configuration : 1190 bytes
+!
+! Last configuration change at 10:40:16 UTC Tue Apr 15 2025
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname SW_MGMT
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+!
+!
+!
+!
+!         
+!         
+!         
+!         
+ip cef    
+no ipv6 cef
+!         
+!         
+!         
+spanning-tree mode pvst
+spanning-tree extend system-id
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+interface Ethernet0/0
+ description Leaf - MGMT
+ switchport mode access
+ spanning-tree portfast edge
+!         
+interface Ethernet0/1
+ description Leaf - MGMT
+ switchport mode access
+ spanning-tree portfast edge
+!         
+interface Ethernet0/2
+ description Leaf - MGMT
+ switchport mode access
+ spanning-tree portfast edge
+!         
+interface Ethernet0/3
+ description Leaf - MGMT
+ switchport mode access
+ spanning-tree portfast edge
+!         
+interface Ethernet1/0
+!         
+interface Ethernet1/1
+!         
+interface Ethernet1/2
+!         
+interface Ethernet1/3
+!         
+ip forward-protocol nd
+!         
+ip http server
+!         
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!         
+!         
+!         
+!         
+!         
+control-plane
+!         
+!         
+line con 0
+ logging synchronous
+line aux 0
+line vty 0 4
+!         
+!         
+!         
+end       
 ```
-### Вывод маршрутной информации
+### Вывод MAC таблицы
 ```
+SW_MGMT#sh mac address-t
+          Mac Address Table
+-------------------------------------------
 
-```
-### Вывод маршрутной информации vrf
-```
-
-
-```
-### Вывод l2vpn evpn
-```
-
+Vlan    Mac Address       Type        Ports
+----    -----------       --------    -----
+   1    5000.0004.0000    DYNAMIC     Et0/0
+   1    5000.0005.0000    DYNAMIC     Et0/1
+   1    5000.0006.0000    DYNAMIC     Et0/2
+   1    5000.000a.0000    DYNAMIC     Et0/3
+   1    5004.0000.1b01    DYNAMIC     Et0/0
+   1    5005.0000.1b01    DYNAMIC     Et0/1
+   1    5006.0000.1b01    DYNAMIC     Et0/2
+   1    500a.0000.1b01    DYNAMIC     Et0/3
 ```
   </p>
 </details>
@@ -2661,9 +2765,102 @@ Group Port-       Type     Protocol  Member Ports
 <details>
   <summary><b> SW1</b></summary>
   <p>
- 
 ```
 
+SW1#sh run
+Building configuration...
+
+Current configuration : 1103 bytes
+!
+! Last configuration change at 07:51:44 UTC Tue Apr 15 2025
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname SW1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+!
+!
+!
+!
+!         
+!         
+!         
+!         
+ip cef    
+no ipv6 cef
+!         
+!         
+!         
+spanning-tree mode pvst
+spanning-tree extend system-id
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+interface Port-channel1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!         
+interface Ethernet0/0
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ channel-group 1 mode active
+!         
+interface Ethernet0/1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ channel-group 1 mode active
+!         
+interface Ethernet0/2
+ switchport access vlan 10
+ switchport mode access
+!         
+interface Ethernet0/3
+!         
+ip forward-protocol nd
+!         
+ip http server
+!         
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!         
+!         
+!         
+!         
+!         
+control-plane
+!         
+!         
+line con 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login    
+!         
+!         
+!         
+end       
 ```
 ### Вывод маршрутной информации
 ```
@@ -2700,6 +2897,30 @@ Group Port-       Type     Protocol  Member Ports
 ```
   </p>
 </details>
+
 ## ICMP
+
+<details>
+  <summary><b> SW2</b></summary>
+  <p>
+ 
+```
+
+```
+### Вывод маршрутной информации
+```
+
+```
+### Вывод маршрутной информации vrf
+```
+
+
+```
+### Вывод l2vpn evpn
+```
+
+```
+  </p>
+</details>
 
 ![icmp.png](icmp.png)
