@@ -3061,39 +3061,49 @@ Group  Port-channel  Protocol    Ports
 
 ## ICMP
 
+### С этим есть проблема. Скорее всего не работает virtual peer-link. Ну или кривые руки, очень хотелось бы разобраться.
+
 <details>
   <summary><b>PC-1</b></summary>
   <p>
+     
  ![PC-1.png](PC-1.png)
+  
   </p>
+  
 </details>
 <details>
   <summary><b>PC-2</b></summary>
   <p>
+     
 ![PC-2.png](PC-2.png)
   </p>
 </details>
 <details>
   <summary><b>PC-3</b></summary>
   <p>
+     
 ![PC-3.png](PC-3.png)
   </p>
 </details>
 <details>
   <summary><b>PC-4</b></summary>
   <p>
+     
 ![PC-4.png](PC-4.png)
   </p>
 </details>
 <details>
   <summary><b>PC-5</b></summary>
   <p>
+     
 ![PC-5.png](PC-5.png)
   </p>
 </details>
 <details>
   <summary><b>PC-6</b></summary>
   <p>
+     
 ![PC-6.png](PC-6.png)
   </p>
 </details>
