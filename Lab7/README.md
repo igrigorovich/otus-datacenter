@@ -2765,8 +2765,8 @@ Vlan    Mac Address       Type        Ports
 <details>
   <summary><b> SW1</b></summary>
   <p>
+ 
 ```
-
 SW1#sh run
 Building configuration...
 
@@ -2862,16 +2862,53 @@ line vty 0 4
 !         
 end       
 ```
-### Вывод маршрутной информации
+### Вывод MAC таблицы
+```
+SW1#sh mac address-t
+          Mac Address Table
+-------------------------------------------
+
+Vlan    Mac Address       Type        Ports
+----    -----------       --------    -----
+   1    0026.f006.0000    DYNAMIC     Po1
+   1    5004.0000.0106    DYNAMIC     Po1
+   1    5004.0000.1b08    DYNAMIC     Po1
+   1    5005.0000.0106    DYNAMIC     Po1
+   1    5005.0000.1b08    DYNAMIC     Po1
+  10    0000.0000.0001    DYNAMIC     Po1
+  10    0026.f006.0000    DYNAMIC     Po1
+  10    0050.0000.0100    DYNAMIC     Po1
+  10    0050.0000.0d00    DYNAMIC     Et0/2
+  10    5005.0000.1b08    DYNAMIC     Po1
+Total Mac Addresses for this criterion: 10
+```
+### Вывод etherchannel summary
+```
+SW1#sh etherchannel summary 
+Flags:  D - down        P - bundled in port-channel
+        I - stand-alone s - suspended
+        H - Hot-standby (LACP only)
+        R - Layer3      S - Layer2
+        U - in use      N - not in use, no aggregation
+        f - failed to allocate aggregator
+
+        M - not in use, minimum links not met
+        m - not in use, port not aggregated due to minimum links not met
+        u - unsuitable for bundling
+        w - waiting to be aggregated
+        d - default port
+
+        A - formed by Auto LAG
+
+
+Number of channel-groups in use: 1
+Number of aggregators:           1
+
+Group  Port-channel  Protocol    Ports
+------+-------------+-----------+-----------------------------------------------
+1      Po1(SU)         LACP      Et0/0(P)    Et0/1(P)
 ```
 
-```
-### Вывод маршрутной информации vrf
-```
-```
-### Вывод l2vpn evpn
-```
-```
   </p>
 </details>
 
@@ -2880,47 +2917,195 @@ end
   <p>
  
 ```
+SW2#sh run
+Building configuration...
 
+Current configuration : 1125 bytes
+!
+! Last configuration change at 10:59:02 UTC Tue Apr 15 2025
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname SW2
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+!
+!
+!
+!
+!         
+!         
+!         
+!         
+ip cef    
+no ipv6 cef
+!         
+!         
+!         
+spanning-tree mode pvst
+spanning-tree extend system-id
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+interface Port-channel1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!         
+interface Ethernet0/0
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ channel-group 1 mode active
+!         
+interface Ethernet0/1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ channel-group 1 mode active
+!         
+interface Ethernet0/2
+ switchport access vlan 20
+ switchport mode access
+ spanning-tree portfast edge
+!         
+interface Ethernet0/3
+!         
+ip forward-protocol nd
+!         
+ip http server
+!         
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!         
+!         
+!         
+!         
+!         
+control-plane
+!         
+!         
+line con 0
+ logging synchronous
+line aux 0
+line vty 0 4
+!         
+!         
+!         
+end       
 ```
-### Вывод маршрутной информации
+### Вывод MAC таблицы
 ```
+SW2#sh mac address-t
+          Mac Address Table
+-------------------------------------------
 
+Vlan    Mac Address       Type        Ports
+----    -----------       --------    -----
+   1    0026.f006.0000    DYNAMIC     Po1
+   1    5006.0000.0106    DYNAMIC     Po1
+   1    500a.0000.0106    DYNAMIC     Po1
+  20    0000.0000.0001    DYNAMIC     Po1
+  20    0026.f006.0000    DYNAMIC     Po1
+  20    0050.0000.0f00    DYNAMIC     Et0/2
+  20    500a.0000.1b08    DYNAMIC     Po1
+Total Mac Addresses for this criterion: 7
 ```
-### Вывод маршрутной информации vrf
+### Вывод etherchannel summary
 ```
+SW2#sh etherch sum
+Flags:  D - down        P - bundled in port-channel
+        I - stand-alone s - suspended
+        H - Hot-standby (LACP only)
+        R - Layer3      S - Layer2
+        U - in use      N - not in use, no aggregation
+        f - failed to allocate aggregator
+
+        M - not in use, minimum links not met
+        m - not in use, port not aggregated due to minimum links not met
+        u - unsuitable for bundling
+        w - waiting to be aggregated
+        d - default port
+
+        A - formed by Auto LAG
 
 
-```
-### Вывод l2vpn evpn
-```
+Number of channel-groups in use: 1
+Number of aggregators:           1
 
+Group  Port-channel  Protocol    Ports
+------+-------------+-----------+-----------------------------------------------
+1      Po1(SU)         LACP      Et0/0(P)    Et0/1(P)
 ```
   </p>
 </details>
+
 
 ## ICMP
 
 <details>
-  <summary><b> SW2</b></summary>
+  <summary><b>PC-1</b></summary>
   <p>
  
 ```
-
-```
-### Вывод маршрутной информации
-```
-
-```
-### Вывод маршрутной информации vrf
-```
-
-
-```
-### Вывод l2vpn evpn
-```
-
 ```
   </p>
 </details>
-
-![icmp.png](icmp.png)
+<details>
+  <summary><b>PC-2</b></summary>
+  <p>
+ 
+```
+```
+  </p>
+</details>
+<details>
+  <summary><b>PC-3</b></summary>
+  <p>
+ 
+```
+```
+  </p>
+</details>
+<details>
+  <summary><b>PC-4</b></summary>
+  <p>
+ 
+```
+```
+  </p>
+</details>
+<details>
+  <summary><b>PC-5</b></summary>
+  <p>
+ 
+```
+```
+  </p>
+</details>
+<details>
+  <summary><b>PC-6</b></summary>
+  <p>
+ 
+```
+```
+  </p>
+</details>
