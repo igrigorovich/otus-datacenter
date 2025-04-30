@@ -10,7 +10,138 @@
    - 65501-65536 - лифы
 
 ## Конфигурация и таблица маршрутизации
+<details>
+  <summary><b>R1</b></summary>
+  <p>
+ 
+```
+R1#sh run 
+*Apr 30 18:40:55.616: %SYS-5-CONFIG_I: Configured from console by console
+Building configuration...
 
+Current configuration : 1304 bytes
+!
+! Last configuration change at 18:40:55 UTC Wed Apr 30 2025
+!
+version 15.9
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+!
+!
+!
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+redundancy
+!
+!
+!
+interface GigabitEthernet0/0
+ mac-address 1212.1212.1212
+ ip address 192.168.70.3 255.255.255.0
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ mac-address 1212.1212.1213
+ ip address 192.168.80.3 255.255.255.0
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/2
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/3
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+router bgp 49900
+ bgp log-neighbor-changes
+ neighbor 192.168.70.1 remote-as 65503
+ neighbor 192.168.70.1 as-override
+ neighbor 192.168.80.1 remote-as 65503
+ neighbor 192.168.80.1 as-override
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+!
+ipv6 ioam timestamp
+!
+!         
+!
+control-plane
+!
+!
+line con 0
+line aux 0
+line vty 0 4
+ login
+ transport input none
+!
+no scheduler allocate
+!
+end
+```
+### Вывод Маршрутной информации
+```
+SW2#sh mac address-t
+ sh ip route bgp
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area 
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+       a - application route
+       + - replicated route, % - next hop override, p - overrides from PfR
+
+Gateway of last resort is not set
+
+      192.168.10.0/24 is variably subnetted, 3 subnets, 2 masks
+B        192.168.10.0/24 [20/0] via 192.168.70.1, 01:54:27
+B        192.168.10.11/32 [20/0] via 192.168.70.1, 01:52:24
+B        192.168.10.30/32 [20/0] via 192.168.70.1, 01:52:24
+      192.168.20.0/24 is variably subnetted, 2 subnets, 2 masks
+B        192.168.20.0/24 [20/0] via 192.168.70.1, 01:54:27
+B        192.168.20.12/32 [20/0] via 192.168.70.1, 01:52:24
+      192.168.30.0/24 is variably subnetted, 2 subnets, 2 masks
+B        192.168.30.0/24 [20/0] via 192.168.80.1, 01:54:27
+B        192.168.30.30/32 [20/0] via 192.168.80.1, 01:51:22
+```
+  </p>
+</details>
 <details>
   <summary><b> Spine-1 </b></summary>
   <p> 
