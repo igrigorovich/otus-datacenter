@@ -6,3 +6,4 @@
 - [ДЗ-5. VxLAN. EVPN L2](Lab5/)
 - [ДЗ-6. VxLAN. EVPN L3](Lab6/)
 - [ДЗ-7. VXLAN. Multihoming](Lab7/)
+- [ДЗ-8. VxLAN. Оптимизация таблиц маршрутизации](Lab8/)
