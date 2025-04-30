@@ -3717,7 +3717,7 @@ Group  Port-channel  Protocol    Ports
 
 ## ICMP
 
-### С этим есть проблема. Скорее всего не работает virtual peer-link. Ну или кривые руки, очень хотелось бы разобраться.
+### Опытным путем было установлено, что при наличии VPC трафик нормально не ходит. Нельзя перераспределить TCAM в сторону  hardware access-list tcam region ing-flow-redirect 512 что пускать трафик через SPAINE в vpc паре. На железе все красиво.
 
 <details>
   <summary><b>PC-1</b></summary>
@@ -3728,34 +3728,7 @@ Group  Port-channel  Protocol    Ports
   </p>
   
 </details>
-<details>
-  <summary><b>PC-2</b></summary>
-  <p>
-     
-![PC-2.png](PC-2.png)
-  </p>
-</details>
-<details>
-  <summary><b>PC-3</b></summary>
-  <p>
-     
-![PC-3.png](PC-3.png)
-  </p>
-</details>
-<details>
-  <summary><b>PC-4</b></summary>
-  <p>
-     
-![PC-4.png](PC-4.png)
-  </p>
-</details>
-<details>
-  <summary><b>PC-5</b></summary>
-  <p>
-     
-![PC-5.png](PC-5.png)
-  </p>
-</details>
+
 <details>
   <summary><b>PC-6</b></summary>
   <p>
