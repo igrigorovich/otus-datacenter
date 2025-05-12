@@ -200,6 +200,18 @@ interface port-channel1000
   switchport mode trunk
   spanning-tree port type network
   vpc peer-link
+
+```
+#### Порт для подключения устройства по VPC
+```
+interface Ethernet1/3 
+  switchport mode trunk
+  channel-group 13 mode active
+
+interface port-channel13
+  switchport mode trunk
+  vpc 13
+
 ```
   </p>
 </details>
@@ -258,3 +270,92 @@ router bgp 65500
   </p>
 </details>
 
+#### L2 и L3 Vxlan
+<details>
+  <summary><b>Leaf</b></summary>
+  <p>
+    
+```
+fabric forwarding anycast-gateway-mac 0000.0000.0001 
+
+vlan 2
+  name VxLan_L3
+  vn-segment 5000
+vlan 10
+  name Vlan_10
+  vn-segment 10010
+vlan 20
+  name Vlan_20
+  vn-segment 10020
+vlan 30
+  name Vlan_30
+  vn-segment 10030
+vlan 40
+  name Vlan_40
+  vn-segment 10040
+
+vrf context VXLAN
+  vni 5000
+  rd auto
+  address-family ipv4 unicast
+    route-target both auto
+    route-target both auto evpn
+
+
+ interface Vlan2
+  description VxLan_L3
+  no shutdown
+  vrf member VXLAN
+  no ip redirects
+  ip forward
+  no ipv6 redirects
+
+interface Vlan10
+  no shutdown
+  vrf member VXLAN
+  no ip redirects
+  ip address 192.168.10.1/24
+  no ipv6 redirects
+  fabric forwarding mode anycast-gateway
+
+interface Vlan20
+  no shutdown
+  vrf member VXLAN
+  no ip redirects
+  ip address 192.168.20.1/24
+  no ipv6 redirects
+  fabric forwarding mode anycast-gateway
+
+interface Vlan30
+  no shutdown
+  vrf member VXLAN
+  no ip redirects
+  ip address 192.168.30.1/24
+  no ipv6 redirects
+  fabric forwarding mode anycast-gateway
+
+interface Vlan40
+  no shutdown
+  vrf member VXLAN
+  no ip redirects
+  ip address 192.168.40.1/24
+  no ipv6 redirects
+  fabric forwarding mode anycast-gateway
+
+
+interface nve1
+  no shutdown
+  host-reachability protocol bgp
+  advertise virtual-rmac
+  source-interface loopback1
+  global suppress-arp
+  global ingress-replication protocol bgp
+  member vni 5000 associate-vrf
+  member vni 10010
+  member vni 10020
+  member vni 10030
+  member vni 10040
+
+```
+  </p>
+</details>
