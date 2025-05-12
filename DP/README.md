@@ -188,7 +188,7 @@ ip router ospf UNDERLAY area 0.0.0.0
 vpc domain X - одинаковый на устройствах пары 
   peer-switch
   system-mac aa:11:ff:aa:11:11
-  peer-keepalive destination 192.168.0.2 source 192.168.0.1  -  Через Management
+  peer-keepalive destination 10.100.62.12  -  Через Management. Адрес соседа в паре.
   virtual peer-link destination 10.1.0.2 source 10.1.0.1 dscp 56 - Виртуальный через Lo2
   delay restore 60
   peer-gateway
